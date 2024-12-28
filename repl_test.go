@@ -3,24 +3,24 @@ package main
 import "testing"
 
 func TestCleanInput(t *testing.T) {
-	cases := []struct{
-		input string
+	cases := []struct {
+		input    string
 		expected []string
 	}{
 		{
-		input: " what a Nice day ",
-		expected: []string{"what", "a", "nice", "day"},
+			input:    " what a Nice day ",
+			expected: []string{"what", "a", "nice", "day"},
 		},
 		{
-			input: "SOMETHINGLARGE",
+			input:    "SOMETHINGLARGE",
 			expected: []string{"somethinglarge"},
 		},
 		{
-			input: "",
+			input:    "",
 			expected: []string{},
 		},
 		{
-			input: "what\ta\tnice\nday",
+			input:    "what\ta\tnice\nday",
 			expected: []string{"what", "a", "nice", "day"},
 		},
 	}
