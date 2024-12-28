@@ -7,11 +7,56 @@ import (
 	"strings"
 )
 
+
+var commandRegistry map[string]cliCommand
+
+func init() {
+	commandRegistry = map[string]cliCommand{
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    commandExit,
+		},
+		"help": {
+			name:        "help",
+			description: "Displays a help message",
+			callback:    commandHelp,
+		},
+	}
+}
+
+func commandExit() error {
+	fmt.Println("Closing the Pokedex... Goodbye!")
+	os.Exit(0)
+	return nil
+}
+
+func commandHelp() error {
+	helpInstruction := "Welcome to the Pokedex!\nUsage:\n\n"
+	for _,v := range commandRegistry {
+		helpInstruction += fmt.Sprintf("%s: %s\n", v.name, v.description)
+	}
+	fmt.Println(helpInstruction)
+	return nil
+}
+
+type cliCommand struct {
+	name string
+	description string
+	callback func() error
+}
+
 func cleanInput(input string) []string {
 	return strings.Fields(strings.ToLower(input))
 }
 
+
+
+
+
 func runRepl() {
+
+
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -29,6 +74,19 @@ func runRepl() {
 			fmt.Println("Error: please enter the command")
 			continue
 		}
-		fmt.Println("Your command was: " + cleanedInput[0])
+
+		commandName := cleanedInput[0]
+
+		command, ok := commandRegistry[commandName]
+		if !ok {
+			fmt.Println("Unknown command")
+			continue
+		}
+
+		err := command.callback()
+		if err != nil {
+			fmt.Println("Error: %v", err)
+		}
+		
 	}
 }
