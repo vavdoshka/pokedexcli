@@ -21,9 +21,13 @@ func commandCatch(config *Config, args []string) error {
 		return err
 	}
 
-	caught := rand.Intn(2)
+	maxCatchProbability := 100
+	maxBaseExp := 600.0
+	probability := maxCatchProbability - int((float64(pokemon.BaseExperience) * 0.99) / maxBaseExp * 100)
 
-	if caught == 1 {
+	rand := rand.Intn(100)
+
+	if rand < probability {
 		config.pokedex[pokemonName] = pokemon
 		fmt.Printf("%s was caught!\n", pokemonName)
 	} else {
