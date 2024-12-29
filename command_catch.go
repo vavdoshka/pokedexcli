@@ -9,6 +9,13 @@ func commandCatch(config *Config, args []string) error {
 		return nil
 	}
 
-	fmt.Println("catch")
+	pokemonName := args[0]
+
+	_, err := config.pokeapiClient.Catch(pokemonName)
+	
+	if err != nil {
+		return err
+	}
+	
 	return nil
 }
