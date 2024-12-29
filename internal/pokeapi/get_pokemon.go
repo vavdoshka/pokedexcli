@@ -277,6 +277,28 @@ type Pokemon struct {
 	} `json:"past_types"`
 }
 
+func (p Pokemon) String() string {
+	header := fmt.Sprintf("Name: %s\nHeight: %d\nWeight: %d\nBaseExperience: %d\n", p.Name, p.Height, p.Weight, p.BaseExperience)
+	
+	stats := ""
+	for _,v := range p.Stats {
+		stats += fmt.Sprintf("  -%s: %d\n", v.Stat.Name, v.BaseStat) 
+	}
+	if stats != "" {
+		stats = "Stats:\n" + stats
+	}
+
+	types := ""
+	for _,v := range p.Types {
+		types += fmt.Sprintf("\n  -%s", v.Type.Name) 
+	}
+	if types != "" {
+		types = "Types:" + types
+	}
+
+	return header + stats + types
+}
+
 func (c *Client) GetPokemon(name string) (Pokemon, error) {
 	url := "https://pokeapi.co/api/v2/pokemon/" + name
 	pokemon, err := genericRequestWithCache[Pokemon](c, url)
