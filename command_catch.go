@@ -23,13 +23,14 @@ func commandCatch(config *Config, args []string) error {
 
 	maxCatchProbability := 100
 	maxBaseExp := 600.0
-	probability := maxCatchProbability - int((float64(pokemon.BaseExperience) * 0.99) / maxBaseExp * 100)
+	probability := maxCatchProbability - int((float64(pokemon.BaseExperience)*0.99)/maxBaseExp*100)
 
 	rand := rand.Intn(100)
 
 	if rand < probability {
 		config.pokedex[pokemonName] = pokemon
 		fmt.Printf("%s was caught!\n", pokemonName)
+		fmt.Println("You may now inspect it with the inspect command.")
 	} else {
 		fmt.Printf("%s escaped!\n", pokemonName)
 	}
