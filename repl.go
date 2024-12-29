@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/vavdoshka/pokedexcli/internal/pokeapi"
+	"github.com/vavdoshka/pokedexcli/internal/cache"
 	"os"
 	"strings"
 	"time"
@@ -11,6 +12,7 @@ import (
 
 type Config struct {
 	pokeapiClient pokeapi.Client
+	cache cache.Cache
 	next          *string
 	previous      *string
 }
@@ -70,8 +72,11 @@ func cleanInput(input string) []string {
 func runRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
 	client := pokeapi.NewClient(5 * time.Second)
+	cache := cache.NewCache(5 * time.Second)
+
 	c := &Config{
 		pokeapiClient: client,
+		cache: cache,
 	}
 
 	for {
