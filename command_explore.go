@@ -11,6 +11,19 @@ func commandExplore(config *Config, args []string) error {
 
 	locationName := args[0]
 
-	fmt.Println(locationName)
+	locationDetails, err := config.pokeapiClient.GetLocation(locationName)
+
+	if err != nil {
+		return err
+	}
+
+	if len(locationDetails.PokemonEncounters) == 0 {
+		fmt.Println("did not find Pokemons")
+	}
+
+	fmt.Printf("location %s, found Pokemens:\n", locationName)
+	for _, v := range locationDetails.PokemonEncounters {
+		fmt.Printf("  - %s\n", v.Pokemon.Name)
+	}
 	return nil
 }

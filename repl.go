@@ -133,7 +133,7 @@ func runRepl() {
 
 		err := command.callback(c, args)
 		if err != nil {
-			fmt.Println("Error: ", err)
+			fmt.Println("Error:", err)
 		}
 
 	}
