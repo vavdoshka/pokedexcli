@@ -26,20 +26,26 @@ func (c *Client) ListLocations(pageUrl *string) (LocationAreaResponse, error) {
 		url = *pageUrl
 	}
 
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return LocationAreaResponse{}, err
-	}
+	dat, ok := c.cache.Get(url)
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return LocationAreaResponse{}, err
-	}
-	defer resp.Body.Close()
+	if !ok {
+		req, err := http.NewRequest("GET", url, nil)
+		if err != nil {
+			return LocationAreaResponse{}, err
+		}
 
-	dat, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return LocationAreaResponse{}, fmt.Errorf("can not read the response %v, err %w", resp.Body, err)
+		resp, err := c.httpClient.Do(req)
+		if err != nil {
+			return LocationAreaResponse{}, err
+		}
+		defer resp.Body.Close()
+
+		dat, err = io.ReadAll(resp.Body)
+		if err != nil {
+			return LocationAreaResponse{}, fmt.Errorf("can not read the response %v, err %w", resp.Body, err)
+		}
+
+		c.cache.Add(url, dat)
 	}
 
 	locationAreaResponse := LocationAreaResponse{}

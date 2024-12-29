@@ -9,7 +9,6 @@ func commandMapb(config *Config) error {
 
 	if config.previous == nil {
 		return errors.New("there is no backward url, you are on the first page")
-
 	}
 
 	locationAreaResponse, err := config.pokeapiClient.ListLocations(config.previous)
