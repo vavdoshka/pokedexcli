@@ -85,7 +85,7 @@ func runRepl() {
 		scanner.Scan()
 
 		if scanner.Err() != nil {
-			fmt.Println("Error: %", scanner.Err)
+			fmt.Println("Error: %", scanner.Err())
 		}
 
 		cleanedInput := cleanInput(scanner.Text())

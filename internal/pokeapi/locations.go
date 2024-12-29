@@ -39,7 +39,7 @@ func (c *Client) ListLocations(pageUrl *string) (LocationAreaResponse, error) {
 
 	dat, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return LocationAreaResponse{}, fmt.Errorf("can not read the response %v, err %w", resp.Body)
+		return LocationAreaResponse{}, fmt.Errorf("can not read the response %v, err %w", resp.Body, err)
 	}
 
 	locationAreaResponse := LocationAreaResponse{}
