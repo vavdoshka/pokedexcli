@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/vavdoshka/pokedexcli/internal/pokeapi"
 	"github.com/vavdoshka/pokedexcli/internal/cache"
+	"github.com/vavdoshka/pokedexcli/internal/pokeapi"
 	"os"
 	"strings"
 	"time"
@@ -12,7 +12,7 @@ import (
 
 type Config struct {
 	pokeapiClient pokeapi.Client
-	cache cache.Cache
+	cache         cache.Cache
 	next          *string
 	previous      *string
 }
@@ -76,7 +76,7 @@ func runRepl() {
 
 	c := &Config{
 		pokeapiClient: client,
-		cache: cache,
+		cache:         cache,
 	}
 
 	for {
