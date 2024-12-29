@@ -10,8 +10,10 @@ func commandCatch(config *Config, args []string) error {
 	}
 
 	pokemonName := args[0]
+	fmt.Printf("Throwing a Pokeball at %s...\n", pokemonName)
 
-	_, err := config.pokeapiClient.Catch(pokemonName)
+
+	_, err := config.pokeapiClient.GetPokemon(pokemonName)
 	
 	if err != nil {
 		return err
