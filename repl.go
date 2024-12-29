@@ -13,6 +13,7 @@ type Config struct {
 	pokeapiClient pokeapi.Client
 	next          *string
 	previous      *string
+	pokedex       map[string]pokeapi.Pokemon
 }
 
 var commandRegistry map[string]cliCommand
@@ -104,6 +105,7 @@ func runRepl() {
 
 	c := &Config{
 		pokeapiClient: client,
+		pokedex:       make(map[string]pokeapi.Pokemon),
 	}
 
 	for {

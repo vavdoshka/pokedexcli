@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type PokemonResp struct {
+type Pokemon struct {
 	ID             int    `json:"id"`
 	Name           string `json:"name"`
 	BaseExperience int    `json:"base_experience"`
@@ -277,17 +277,16 @@ type PokemonResp struct {
 	} `json:"past_types"`
 }
 
-func (c *Client) GetPokemon(name string) (PokemonResp, error) {
+func (c *Client) GetPokemon(name string) (Pokemon, error) {
 	url := "https://pokeapi.co/api/v2/pokemon/" + name
-	pokemonResp, err := genericRequestWithCache[PokemonResp](c, url)
+	pokemon, err := genericRequestWithCache[Pokemon](c, url)
 
 	if errors.Is(err, NotFoundError{}) {
-		return PokemonResp{}, errors.New(fmt.Sprintf("pokemon '%s' was not found, ensure there is no spelling mistake", name))
+		return Pokemon{}, errors.New(fmt.Sprintf("pokemon '%s' was not found, ensure there is no spelling mistake", name))
 	}
 	if err != nil {
-		return PokemonResp{}, err
+		return Pokemon{}, err
 	}
 
-
-	return pokemonResp, nil
+	return pokemon, nil
 }
