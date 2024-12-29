@@ -39,16 +39,42 @@ func init() {
 			description: "Displays the names of 20 location areas in the Pokemon world, goes backward and shows 20 locations at once.",
 			callback:    commandMapb,
 		},
+		"explore": {
+			name:        "explore",
+			description: "Displays the inforamation about a location in Pokemon world.",
+			callback:    commandExplore,
+		},
 	}
 }
 
-func commandExit(config *Config) error {
+func commandExit(config *Config, args []string) error {
+	if len(args) > 0 {
+		fmt.Println("exit command does not expect any arguments, just call 'exit'")
+		return nil
+	}
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(config *Config) error {
+func commandHelp(config *Config, args []string) error {
+
+	if len(args) > 1 {
+		fmt.Println("call 'help' to list all commands or 'help command' to get a help on specific command.")
+		return nil
+	}
+
+	if len(args) == 1 {
+		v, ok := commandRegistry[args[0]]
+		if !ok {
+			fmt.Printf("command '%s' does not exist, call 'help' to list all commands.\n", args[0])
+			return nil
+		}
+
+		fmt.Printf("%s: %s\n", v.name, v.description)
+		return nil
+	}
+
 	helpInstruction := "Welcome to the Pokedex!\nUsage:\n\n"
 	for _, v := range commandRegistry {
 		helpInstruction += fmt.Sprintf("%s: %s\n", v.name, v.description)
@@ -60,7 +86,7 @@ func commandHelp(config *Config) error {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*Config) error
+	callback    func(*Config, []string) error
 }
 
 func cleanInput(input string) []string {
@@ -93,13 +119,19 @@ func runRepl() {
 
 		commandName := cleanedInput[0]
 
+		args := make([]string, 0)
+
+		if len(cleanedInput) > 1 {
+			args = cleanedInput[1:]
+		}
+
 		command, ok := commandRegistry[commandName]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		}
 
-		err := command.callback(c)
+		err := command.callback(c, args)
 		if err != nil {
 			fmt.Println("Error: ", err)
 		}

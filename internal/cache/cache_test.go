@@ -1,9 +1,9 @@
 package cache
 
 import (
+	"fmt"
 	"testing"
 	"time"
-	"fmt"
 )
 
 func TestCacheAddGet(t *testing.T) {
