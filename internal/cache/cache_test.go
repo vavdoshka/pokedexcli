@@ -3,6 +3,7 @@ package cache
 import (
 	"testing"
 	"time"
+	"fmt"
 )
 
 func TestCacheAddGet(t *testing.T) {
@@ -43,19 +44,21 @@ func TestCacheAddGet(t *testing.T) {
 
 	cache := NewCache(5 * time.Second)
 
-	for _, v := range cases {
+	for i, v := range cases {
+		t.Run(fmt.Sprintf("Test case %v", i), func(t *testing.T) {
 
-		cache.Add(v.input.key, v.input.value)
+			cache.Add(v.input.key, v.input.value)
 
-		actual, ok := cache.Get(v.input.key)
-		if !ok {
-			t.Errorf("%s was not found in cache %v", v.input.key, cache.cache)
-			continue
-		}
+			actual, ok := cache.Get(v.input.key)
+			if !ok {
+				t.Errorf("%s was not found in cache %v", v.input.key, cache.cache)
+				return
+			}
 
-		if string(actual) != string(v.expected) {
-			t.Errorf("actual '%v' does not equal to expected: '%v'", actual, v.expected)
-		}
+			if string(actual) != string(v.expected) {
+				t.Errorf("actual '%v' does not equal to expected: '%v'", actual, v.expected)
+			}
+		})
 	}
 
 }
