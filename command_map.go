@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 func commandMapb(config *Config) error {
@@ -20,7 +20,6 @@ func commandMapb(config *Config) error {
 	config.next = locationAreaResponse.Next
 	config.previous = locationAreaResponse.Previous
 
-
 	for _, v := range locationAreaResponse.Results {
 		fmt.Println(v.Name)
 	}
@@ -35,10 +34,8 @@ func commandMap(config *Config) error {
 		return fmt.Errorf("can not map, internal error %w", err)
 	}
 
-
 	config.next = locationAreaResponse.Next
 	config.previous = locationAreaResponse.Previous
-
 
 	for _, v := range locationAreaResponse.Results {
 		fmt.Println(v.Name)

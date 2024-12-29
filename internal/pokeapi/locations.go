@@ -1,22 +1,22 @@
 package pokeapi
 
 import (
-	"net/http"
 	"encoding/json"
 	"fmt"
 	"io"
+	"net/http"
 )
 
 type LocationAreaResponse struct {
-	Count int `json:"count"`
-	Next *string `json:"next"`
-	Previous *string `json:"previous"`
-	Results []LocationArea `json:"results"`
+	Count    int            `json:"count"`
+	Next     *string        `json:"next"`
+	Previous *string        `json:"previous"`
+	Results  []LocationArea `json:"results"`
 }
 
 type LocationArea struct {
 	Name string `json:"name"`
-	Url string `json:"url"`
+	Url  string `json:"url"`
 }
 
 func (c *Client) ListLocations(pageUrl *string) (LocationAreaResponse, error) {
@@ -37,7 +37,7 @@ func (c *Client) ListLocations(pageUrl *string) (LocationAreaResponse, error) {
 	}
 	defer resp.Body.Close()
 
-	dat, err := io.ReadAll(resp.Body) 
+	dat, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return LocationAreaResponse{}, fmt.Errorf("can not read the response %v, err %w", resp.Body)
 	}

@@ -3,16 +3,16 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/vavdoshka/pokedexcli/internal/pokeapi"
 	"os"
 	"strings"
-	"github.com/vavdoshka/pokedexcli/internal/pokeapi"
 	"time"
 )
 
 type Config struct {
 	pokeapiClient pokeapi.Client
-	next *string
-	previous *string
+	next          *string
+	previous      *string
 }
 
 var commandRegistry map[string]cliCommand
@@ -42,7 +42,6 @@ func init() {
 	}
 }
 
-
 func commandExit(config *Config) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
@@ -51,7 +50,7 @@ func commandExit(config *Config) error {
 
 func commandHelp(config *Config) error {
 	helpInstruction := "Welcome to the Pokedex!\nUsage:\n\n"
-	for _,v := range commandRegistry {
+	for _, v := range commandRegistry {
 		helpInstruction += fmt.Sprintf("%s: %s\n", v.name, v.description)
 	}
 	fmt.Println(helpInstruction)
@@ -59,9 +58,9 @@ func commandHelp(config *Config) error {
 }
 
 type cliCommand struct {
-	name string
+	name        string
 	description string
-	callback func(*Config) error
+	callback    func(*Config) error
 }
 
 func cleanInput(input string) []string {
@@ -79,13 +78,12 @@ func runRepl() {
 		fmt.Print("Pokedex > ")
 
 		scanner.Scan()
-		
+
 		if scanner.Err() != nil {
 			fmt.Println("Error: %", scanner.Err)
 		}
 
 		cleanedInput := cleanInput(scanner.Text())
-		
 
 		if len(cleanedInput) == 0 {
 			fmt.Println("Error: please enter the command")
@@ -104,6 +102,6 @@ func runRepl() {
 		if err != nil {
 			fmt.Println("Error: ", err)
 		}
-		
+
 	}
 }
